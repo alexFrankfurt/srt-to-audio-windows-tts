@@ -1,5 +1,6 @@
 # srt-to-audio-windows-tts
-Transform subtitles to timed audio
+Translate audio to english.
+Transform subtitles to timed audio.
 
 
 # Origin
