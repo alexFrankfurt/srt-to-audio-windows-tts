@@ -4,7 +4,7 @@ Transform subtitles to timed audio.
 
 
 # Origin
-100% AI Generated with Microsoft Copilot
+100% AI Generated with Microsoft Copilot and Google Gemini
 
 # Instruction
 
