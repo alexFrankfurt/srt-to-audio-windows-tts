@@ -14,7 +14,9 @@ Transform subtitles to timed audio.
  whisper .\ReelAudio-24214.mp3 --task translate --model medium
 ```
 
-2. Run script to generate english audio
+2. Put generated english subtitles inside your_subtitles.srt
+
+3. Run script to generate english audio
 ```
  python .\srt_to_timed_audio.py
 ```
