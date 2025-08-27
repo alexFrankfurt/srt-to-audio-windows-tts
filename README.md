@@ -22,3 +22,6 @@ Transform subtitles to timed audio.
 ```
 
 
+![foreign audio to srt to english audio](Gemini_Generated_Image_wslw2nwslw2nwslw.png)
+
+
