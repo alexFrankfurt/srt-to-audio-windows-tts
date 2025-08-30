@@ -1,0 +1,41 @@
+# Build artifacts and temporary files
+output_audio/
+*.mp3
+*.wav
+*.flac
+*.m4a
+*.aac
+*.ogg
+*.wma
+
+# Except for the sample subtitle file
+!your_subtitles.srt
+
+# Whisper generated files
+*.txt
+*.vtt
+*.tsv
+*.json
+concat_list.txt
+
+# Except for the README
+!README.md
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
