@@ -2,6 +2,13 @@
 Translate audio to english.
 Transform subtitles to timed audio.
 
+## 🆕 Enhanced Features
+- **Alternative Language Model Approach**: Use OpenAI TTS for advanced text-to-speech
+- **Whisper TXT Processing**: Process Whisper's .txt output directly (most straightforward format)
+- **Enhanced Error Handling**: Comprehensive logging with condition variable assignment
+- **Configurable TTS Methods**: Choose between Edge TTS and OpenAI TTS
+
+📖 See [ENHANCED_FEATURES.md](ENHANCED_FEATURES.md) for detailed documentation on new capabilities.
 
 # Origin
 100% AI Generated with Microsoft Copilot and Google Gemini
