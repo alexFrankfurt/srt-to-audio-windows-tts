@@ -1,6 +1,8 @@
 # Build artifacts and temporary files
 output_audio/
 test_output/
+venv311/
+venv312/
 *.mp3
 *.wav
 *.flac

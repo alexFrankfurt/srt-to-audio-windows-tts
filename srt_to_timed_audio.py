@@ -142,17 +142,22 @@ def generate_audio_chatterbox_tts(text, filename):
         
         # Generate audio using ChatterboxTTS
         # ChatterboxTTS typically uses synthesize method with text as first parameter
-        audio_data = model.synthesize(
+        audio_data = model.generate(
             text,
             exaggeration=CHATTERBOX_EXAGGERATION,
             temperature=CHATTERBOX_TEMPERATURE,
             cfg_weight=CHATTERBOX_CFG_WEIGHT
         )
-        
+        import numpy as np
+        audio_np = audio_data.detach().cpu().numpy()
+        if audio_np.ndim > 1 and audio_np.shape[0] == 1:
+            audio_np = audio_np[0]
+            
+        audio_np = audio_np.astype(np.float32)    
         # Save audio to file
         # ChatterboxTTS typically returns numpy array or torch tensor
         import soundfile as sf
-        sf.write(filename, audio_data, SAMPLE_RATE)
+        sf.write(filename, audio_np, model.sr)
         
         logger.info(f"Generated ChatterboxTTS audio: {filename}")
         
