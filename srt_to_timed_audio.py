@@ -25,9 +25,14 @@ SRT_FILE = "your_subtitles.srt"
 FINAL_AUDIO = "final_output.mp3"
 
 # TTS Method configuration
-TTS_METHOD = os.getenv("TTS_METHOD", "edge_tts")  # Options: "edge_tts", "openai_tts"
+TTS_METHOD = os.getenv("TTS_METHOD", "edge_tts")  # Options: "edge_tts", "openai_tts", "chatterbox_tts"
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_VOICE = "alloy"  # OpenAI TTS voice options: alloy, echo, fable, onyx, nova, shimmer
+
+# ChatterboxTTS configuration
+CHATTERBOX_EXAGGERATION = float(os.getenv("CHATTERBOX_EXAGGERATION", "0.5"))  # Emotion intensity (0.25-2.0)
+CHATTERBOX_TEMPERATURE = float(os.getenv("CHATTERBOX_TEMPERATURE", "0.1"))    # Randomness (0.05-5.0) 
+CHATTERBOX_CFG_WEIGHT = float(os.getenv("CHATTERBOX_CFG_WEIGHT", "0.5"))      # Guidance strength (0.0-1.0)
 
 def seconds(td):
     return td.total_seconds()
@@ -102,6 +107,62 @@ def generate_audio_openai_tts(text, filename):
         logger.error(f"Error condition: {error_condition}, Error: {e}")
         raise
 
+def generate_audio_chatterbox_tts(text, filename):
+    """Generate audio using ChatterboxTTS (production-grade open-source approach)"""
+    try:
+        # Check if ChatterboxTTS is available
+        try:
+            from chatterbox_tts import ChatterboxTTS
+            chatterbox_available = True
+        except ImportError:
+            chatterbox_available = False
+            
+        if not chatterbox_available:
+            error_condition = "ChatterboxTTS library not available"
+            logger.error(f"Error condition: {error_condition}")
+            logger.info("Install ChatterboxTTS with: pip install chatterbox-tts")
+            # Fall back to mock for testing/demo purposes
+            generate_audio_mock_tts(text, filename)
+            return
+            
+        # Initialize ChatterboxTTS model (first time only)
+        if not hasattr(generate_audio_chatterbox_tts, '_model'):
+            logger.info("Loading ChatterboxTTS model (first time)...")
+            try:
+                generate_audio_chatterbox_tts._model = ChatterboxTTS()
+                logger.info("ChatterboxTTS model loaded successfully")
+            except Exception as e:
+                error_condition = f"ChatterboxTTS model loading failed"
+                logger.error(f"Error condition: {error_condition}, Error: {e}")
+                logger.info("Falling back to mock TTS for testing")
+                generate_audio_mock_tts(text, filename)
+                return
+        
+        model = generate_audio_chatterbox_tts._model
+        
+        # Generate audio using ChatterboxTTS
+        # Note: API based on research from ChatterboxTTS repositories
+        audio_data = model.tts(
+            text=text,
+            exaggeration=CHATTERBOX_EXAGGERATION,
+            temperature=CHATTERBOX_TEMPERATURE,
+            cfg_weight=CHATTERBOX_CFG_WEIGHT
+        )
+        
+        # Save audio to file
+        # ChatterboxTTS typically returns numpy array or torch tensor
+        import soundfile as sf
+        sf.write(filename, audio_data, SAMPLE_RATE)
+        
+        logger.info(f"Generated ChatterboxTTS audio: {filename}")
+        
+    except Exception as e:
+        error_condition = f"ChatterboxTTS generation failed for text: {text[:50]}..."
+        logger.error(f"Error condition: {error_condition}, Error: {e}")
+        logger.info("Falling back to mock TTS for testing")
+        generate_audio_mock_tts(text, filename)
+        raise
+
 def generate_audio_mock_tts(text, filename):
     """Generate mock audio for testing purposes when internet is not available"""
     try:
@@ -123,17 +184,23 @@ def generate_audio_mock_tts(text, filename):
 async def generate_audio(text, filename):
     """Generate audio using selected TTS method"""
     method_is_openai = TTS_METHOD.lower() == "openai_tts"
+    method_is_chatterbox = TTS_METHOD.lower() == "chatterbox_tts"
     use_mock_mode = os.getenv("USE_MOCK_TTS", "false").lower() == "true"
     
     if use_mock_mode:
         logger.info(f"Using Mock TTS (testing mode) for: {text[:50]}...")
         if method_is_openai:
             generate_audio_mock_tts(text, filename)
+        elif method_is_chatterbox:
+            generate_audio_mock_tts(text, filename)
         else:
             await generate_audio_mock_edge_tts(text, filename)
     elif method_is_openai:
         logger.info(f"Using OpenAI TTS (language model approach) for: {text[:50]}...")
         generate_audio_openai_tts(text, filename)
+    elif method_is_chatterbox:
+        logger.info(f"Using ChatterboxTTS (production-grade open-source approach) for: {text[:50]}...")
+        generate_audio_chatterbox_tts(text, filename)
     else:
         logger.info(f"Using Edge TTS (traditional approach) for: {text[:50]}...")
         await generate_audio_edge_tts(text, filename)
