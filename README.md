@@ -57,7 +57,7 @@ run_pipeline.bat my_audio.wav medium result.mp3
 
 ### Prerequisites
 The script will check for these dependencies and guide you through installation:
-- **Python 3.7+** - Download from [python.org](https://python.org)
+- **Python 3.7+** (Python 3.11 optimal) - Download from [python.org](https://python.org)
 - **FFmpeg** - Download from [ffmpeg.org](https://ffmpeg.org) or install via package manager
 - **OpenAI Whisper** - Install with: `pip install openai-whisper`
 - **Python packages** - Install with: `pip install srt edge-tts`
