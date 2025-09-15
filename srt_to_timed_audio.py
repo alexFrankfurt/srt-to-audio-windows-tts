@@ -112,7 +112,7 @@ def generate_audio_chatterbox_tts(text, filename):
     try:
         # Check if ChatterboxTTS is available
         try:
-            from chatterbox_tts import ChatterboxTTS
+            from chatterbox.tts import ChatterboxTTS
             chatterbox_available = True
         except ImportError:
             chatterbox_available = False
@@ -129,7 +129,7 @@ def generate_audio_chatterbox_tts(text, filename):
         if not hasattr(generate_audio_chatterbox_tts, '_model'):
             logger.info("Loading ChatterboxTTS model (first time)...")
             try:
-                generate_audio_chatterbox_tts._model = ChatterboxTTS()
+                generate_audio_chatterbox_tts._model = ChatterboxTTS.from_pretrained(device="cpu")
                 logger.info("ChatterboxTTS model loaded successfully")
             except Exception as e:
                 error_condition = f"ChatterboxTTS model loading failed"
@@ -141,9 +141,9 @@ def generate_audio_chatterbox_tts(text, filename):
         model = generate_audio_chatterbox_tts._model
         
         # Generate audio using ChatterboxTTS
-        # Note: API based on research from ChatterboxTTS repositories
-        audio_data = model.tts(
-            text=text,
+        # ChatterboxTTS typically uses synthesize method with text as first parameter
+        audio_data = model.synthesize(
+            text,
             exaggeration=CHATTERBOX_EXAGGERATION,
             temperature=CHATTERBOX_TEMPERATURE,
             cfg_weight=CHATTERBOX_CFG_WEIGHT
