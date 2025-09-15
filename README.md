@@ -4,9 +4,10 @@ Transform subtitles to timed audio.
 
 ## 🆕 Enhanced Features
 - **Alternative Language Model Approach**: Use OpenAI TTS for advanced text-to-speech
+- **Production-Grade Open-Source TTS**: Use ChatterboxTTS for high-quality voice synthesis
 - **Whisper TXT Processing**: Process Whisper's .txt output directly (most straightforward format)
 - **Enhanced Error Handling**: Comprehensive logging with condition variable assignment
-- **Configurable TTS Methods**: Choose between Edge TTS and OpenAI TTS
+- **Configurable TTS Methods**: Choose between Edge TTS, OpenAI TTS, and ChatterboxTTS
 
 📖 See [ENHANCED_FEATURES.md](ENHANCED_FEATURES.md) for detailed documentation on new capabilities.
 
@@ -60,6 +61,7 @@ The script will check for these dependencies and guide you through installation:
 - **FFmpeg** - Download from [ffmpeg.org](https://ffmpeg.org) or install via package manager
 - **OpenAI Whisper** - Install with: `pip install openai-whisper`
 - **Python packages** - Install with: `pip install srt edge-tts`
+- **ChatterboxTTS** (optional) - Install with: `pip install chatterbox-tts`
 
 ## Option 2: Manual Steps
 
@@ -90,7 +92,7 @@ python .\srt_to_timed_audio.py
 # Pipeline Steps
 
 1. **Audio → SRT**: Uses OpenAI Whisper to transcribe and translate audio to English subtitles
-2. **SRT → Timed Audio**: Converts subtitles to speech using Windows TTS (edge-tts)
+2. **SRT → Timed Audio**: Converts subtitles to speech using configurable TTS (Edge TTS, OpenAI TTS, or ChatterboxTTS)
 3. **Audio Assembly**: Uses FFmpeg to create properly timed final audio file
 
 ![foreign audio to srt to english audio](Gemini_Generated_Image_wslw2nwslw2nwslw.png)

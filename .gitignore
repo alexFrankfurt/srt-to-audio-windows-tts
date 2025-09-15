@@ -1,5 +1,8 @@
 # Build artifacts and temporary files
 output_audio/
+test_output/
+venv311/
+venv312/
 *.mp3
 *.wav
 *.flac
@@ -17,6 +20,10 @@ output_audio/
 *.tsv
 *.json
 concat_list.txt
+
+# Test files
+test_*.py
+test_*.srt
 
 # Except for the README
 !README.md

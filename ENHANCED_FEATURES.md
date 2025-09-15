@@ -10,7 +10,8 @@ The enhanced script now supports two different approaches for text-to-audio conv
 
 ### Language Model TTS Options
 - **Edge TTS** (traditional): Windows Text-to-Speech
-- **OpenAI TTS** (new language model approach): Advanced AI-powered text-to-speech
+- **OpenAI TTS** (language model approach): Advanced AI-powered text-to-speech
+- **ChatterboxTTS** (production-grade open-source): High-quality voice synthesis with cloning capabilities
 
 ### Enhanced Error Handling
 - All error conditions are assigned to variables and logged as requested
@@ -23,8 +24,9 @@ Set these environment variables to configure the enhanced behavior:
 
 ```bash
 # Select TTS method
-export TTS_METHOD=edge_tts          # Options: edge_tts, openai_tts
+export TTS_METHOD=edge_tts          # Options: edge_tts, openai_tts, chatterbox_tts
 export TTS_METHOD=openai_tts        # Use OpenAI language model approach
+export TTS_METHOD=chatterbox_tts    # Use ChatterboxTTS production-grade open-source approach
 
 # Select processing approach  
 export USE_TXT_APPROACH=true        # Use Whisper .txt output (alternative)
@@ -33,6 +35,11 @@ export USE_TXT_APPROACH=false       # Use SRT timing-based approach (default)
 # OpenAI TTS configuration (when using openai_tts method)
 export OPENAI_API_KEY=your_api_key  # Required for OpenAI TTS
 export OPENAI_VOICE=alloy           # Options: alloy, echo, fable, onyx, nova, shimmer
+
+# ChatterboxTTS configuration (when using chatterbox_tts method)
+export CHATTERBOX_EXAGGERATION=0.5  # Emotion intensity (0.25-2.0)
+export CHATTERBOX_TEMPERATURE=0.1   # Randomness (0.05-5.0)
+export CHATTERBOX_CFG_WEIGHT=0.5    # Guidance strength (0.0-1.0)
 
 # Testing mode (for development/testing without internet)
 export USE_MOCK_TTS=true            # Use mock TTS for testing
@@ -47,6 +54,24 @@ python srt_to_timed_audio.py
 
 ### Alternative Approach (TXT-based with Edge TTS)
 ```bash
+USE_TXT_APPROACH=true python srt_to_timed_audio.py
+```
+
+### Production-Grade Open-Source Approach (ChatterboxTTS with Edge TTS)
+```bash
+TTS_METHOD=chatterbox_tts python srt_to_timed_audio.py
+```
+
+### Production-Grade Open-Source Approach (ChatterboxTTS with TXT processing)
+```bash
+TTS_METHOD=chatterbox_tts USE_TXT_APPROACH=true python srt_to_timed_audio.py
+```
+
+### ChatterboxTTS with Custom Settings
+```bash
+export TTS_METHOD=chatterbox_tts
+export CHATTERBOX_EXAGGERATION=0.7  # More expressive speech
+export CHATTERBOX_CFG_WEIGHT=0.3    # Faster pacing
 USE_TXT_APPROACH=true python srt_to_timed_audio.py
 ```
 
@@ -81,11 +106,21 @@ if not api_key_available:
 ### Language Model Integration
 OpenAI's TTS API provides advanced language model-powered text-to-speech as an alternative to traditional TTS engines.
 
+### ChatterboxTTS Integration
+ChatterboxTTS is ResembleAI's production-grade open-source TTS model offering:
+- **High-quality voice synthesis** comparable to commercial solutions
+- **Voice cloning capabilities** for personalized speech
+- **Configurable emotion and expressiveness** via exaggeration parameter
+- **Flexible speech pacing** through CFG weight control
+- **No API key required** - completely open-source and self-hosted
+
 ## Dependencies
 
 Additional dependencies for the enhanced features:
 ```bash
-pip install openai  # For OpenAI TTS language model approach
+pip install openai         # For OpenAI TTS language model approach
+pip install chatterbox-tts # For ChatterboxTTS production-grade approach
+pip install soundfile      # For ChatterboxTTS audio file handling
 ```
 
 Existing dependencies remain the same:
