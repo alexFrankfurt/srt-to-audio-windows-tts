@@ -16,6 +16,11 @@ Transform subtitles to timed audio.
 
 # Quick Start (Automated)
 
+## TLDR; 
+```powershell
+env:TTS_METHOD="chatterbox_tts" ; .\run_pipeline.ps1 -InputAudioFile "your_audio.mp3"
+```
+
 ## Option 1: PowerShell Script (Recommended)
 Run the entire pipeline with a single command:
 
